@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
         title: 'Pokedex',
         home: AppRootWidget(),
         routes: {
-          // Usar los nombres de rutas en formato de cadena
           '/category': (context) => CategoryScreen(),
           '/pokemon': (context) => PokemonScreenWidget(),
           '/favorites': (context) => PokemonFavoriteListScreen(),
@@ -71,9 +70,20 @@ class _MainWidgetState extends State<MainWidget> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    final loginProvider = Provider.of<LoginProvider>(context, listen: false);
+
+    if (index == 3) {
+      if (loginProvider.isLoggedIn) {
+        loginProvider.logout();
+        Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+      } else {
+        Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+      }
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
